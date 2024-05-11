@@ -1,6 +1,6 @@
 ### Prerequisite :
-#### Ensure 'tar' and 'unzip' already installed
-    apt-get update -y && apt-get install tar unzip -y
+#### Ensure 'git' and 'build-essential' already installed
+    apt-get update -y && apt-get install git build-essential -y
 ### Steps :
 #### Download the release :
     git clone https://github.com/CryptoNodeID/airchain.git
