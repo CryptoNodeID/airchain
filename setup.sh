@@ -214,26 +214,29 @@ done
 EOF
 chmod ug+x delegate.sh
 
+tee validator.json > /dev/null <<EOF
+{
+    "pubkey": $(${DAEMON_NAME} comet show-validator),
+    "amount": "1000000${DENOM}",
+    "moniker": "$VALIDATOR_KEY_NAME",
+    "identity": "$INPUT_IDENTITY",
+    "website": "$INPUT_WEBSITE",
+    "security": "$INPUT_EMAIL",
+    "details": "$INPUT_DETAILS",
+    "commission-rate": "0.1",
+    "commission-max-rate": "0.2",
+    "commission-max-change-rate": "0.01",
+    "min-self-delegation": "1"
+}
+EOF
 tee create_validator.sh > /dev/null <<EOF
 #!/bin/bash
-${DAEMON_NAME} tx staking create-validator \\
-  --amount=1000000${DENOM} \\
-  --pubkey=\$(${DAEMON_NAME} tendermint show-validator) \\
-  --moniker="$VALIDATOR_KEY_NAME" \\
-  --identity="${INPUT_IDENTITY}" \\
-  --website="${INPUT_WEBSITE}" \\
-  --details="${INPUT_DETAILS}" \\
-  --security-contact="${INPUT_EMAIL}" \\
-  --chain-id="$CHAIN_ID" \\
-  --commission-rate="0.05" \\
-  --commission-max-rate="0.2" \\
-  --commission-max-change-rate="0.02" \\
-  --min-self-delegation="1" \\
-  --gas="300000" \\
-  --gas-prices="100${DENOM}" \\
-  --from=$VALIDATOR_KEY_NAME
+${DAEMON_NAME} tx staking create-validator ./validator.json \
+    --from=${VALIDATOR_KEY_NAME} \
+    --chain-id=${CHAIN_ID} \
+    --fees=500${DENOM}
 EOF
-chmod ug+x create_validator.sh
+chmod +x create_validator.sh
 
 tee unjail_validator.sh > /dev/null <<EOF
 #!/bin/bash
