@@ -5,9 +5,9 @@ SERVICE_NAME=junctiond-testnet
 INSTALLATION_DIR=$(dirname "$(realpath "$0")")
 CHAIN_ID='junction'
 GENESIS_URL="https://github.com/airchains-network/junction/releases/download/v0.1.0/genesis.json"
-PEERS="df2a56a208821492bd3d04dd2e91672657c79325@airchain-testnet-peer.cryptonode.id:27656,48887cbb310bb854d7f9da8d5687cbfca02b9968@35.200.245.190:26656,2d1ea4833843cc1433e3c44e69e297f357d2d8bd@5.78.118.106:26656,de2e7251667dee5de5eed98e54a58749fadd23d8@34.22.237.85:26656,1918bd71bc764c71456d10483f754884223959a5@35.240.206.208:26656,ddd9aade8e12d72cc874263c8b854e579903d21c@178.18.240.65:26656,eb62523dfa0f9bd66a9b0c281382702c185ce1ee@38.242.145.138:26656,0305205b9c2c76557381ed71ac23244558a51099@162.55.65.162:26656,086d19f4d7542666c8b0cac703f78d4a8d4ec528@135.148.232.105:26656,3e5f3247d41d2c3ceeef0987f836e9b29068a3e9@168.119.31.198:56256,8b72b2f2e027f8a736e36b2350f6897a5e9bfeaa@131.153.232.69:26656,6a2f6a5cd2050f72704d6a9c8917a5bf0ed63b53@93.115.25.41:26656,e09fa8cc6b06b99d07560b6c33443023e6a3b9c6@65.21.131.187:26656"
+PEERS="df2a56a208821492bd3d04dd2e91672657c79325@airchain-testnet-peer.cryptonode.id:27656,aeaf101d54d47f6c99b4755983b64e8504f6132d@airchain-testnet-peer.dashnode.org:28656,47f61921b54a652ca5241e2a7fc4ed8663091e89@airchains-testnet-peer.itrocket.net:19656,04e2fdd6ec8f23729f24245171eaceae5219aa91@airchains-testnet-seed.itrocket.net:19656,2d1ea4833843cc1433e3c44e69e297f357d2d8bd@5.78.118.106:26656"
 RPC="https://airchain-testnet-rpc.cryptonode.id:443"
-SEEDS="de2e7251667dee5de5eed98e54a58749fadd23d8@34.22.237.85:26656"
+SEEDS="2d1ea4833843cc1433e3c44e69e297f357d2d8bd@5.78.118.106:26656"
 DENOM='amf'
 REPO=""
 BIN_REPO="https://github.com/airchains-network/junction/releases/download/v0.1.0/junctiond"
@@ -164,7 +164,7 @@ sed -i.bak \
     -e "s/^[[:space:]]*persistent_peers *=.*/persistent_peers = \"${PEERS}\"/" \
     ${DAEMON_HOME}/config/config.toml
 
-sed -i 's/minimum-gas-prices *=.*/minimum-gas-prices = "100'$DENOM'"/' ${DAEMON_HOME}/config/app.toml
+sed -i 's/minimum-gas-prices *=.*/minimum-gas-prices = "0.025'$DENOM'"/' ${DAEMON_HOME}/config/app.toml
 sed -i \
   -e 's|^[[:space:]]*pruning *=.*|pruning = "custom"|' \
   -e 's|^[[:space:]]*pruning-keep-recent *=.*|pruning-keep-recent = "100"|' \
@@ -208,7 +208,7 @@ while true; do
         --from=$VALIDATOR_KEY_NAME \\
         --chain-id="$CHAIN_ID" \\
         --gas="200000" \\
-        --gas-prices="10${DENOM}"
+        --gas-prices="0.025${DENOM}"
     fi
 done
 EOF
@@ -244,7 +244,7 @@ ${DAEMON_NAME} tx slashing unjail \\
  --from=$VALIDATOR_KEY_NAME \\
  --chain-id="$CHAIN_ID" \\
  --gas="300000" \\
- --gas-prices="100${DENOM}"
+ --gas-prices="0.025${DENOM}"
 EOF
 chmod ug+x unjail_validator.sh
 
