@@ -1,6 +1,6 @@
 #!/bin/bash
 DAEMON_NAME=junctiond
-DAEMON_HOME=$HOME/.junction
+DAEMON_HOME=$HOME/.junction-testnet
 SERVICE_NAME=junctiond-testnet
 INSTALLATION_DIR=$(dirname "$(realpath "$0")")
 CHAIN_ID='junction'
