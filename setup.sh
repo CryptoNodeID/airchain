@@ -5,14 +5,14 @@ SERVICE_NAME=junctiond-testnet
 INSTALLATION_DIR=$(dirname "$(realpath "$0")")
 CHAIN_ID='junction'
 GENESIS_URL="https://github.com/airchains-network/junction/releases/download/v0.1.0/genesis.json"
-PEERS="df2a56a208821492bd3d04dd2e91672657c79325@airchain-testnet-peer.cryptonode.id:27656,aeaf101d54d47f6c99b4755983b64e8504f6132d@airchain-testnet-peer.dashnode.org:28656,47f61921b54a652ca5241e2a7fc4ed8663091e89@airchains-testnet-peer.itrocket.net:19656,04e2fdd6ec8f23729f24245171eaceae5219aa91@airchains-testnet-seed.itrocket.net:19656,2d1ea4833843cc1433e3c44e69e297f357d2d8bd@5.78.118.106:26656"
-RPC="https://airchain-testnet-rpc.cryptonode.id:443"
-SEEDS="2d1ea4833843cc1433e3c44e69e297f357d2d8bd@5.78.118.106:26656"
+PEERS=""
+RPC=""
+SEEDS=""
 DENOM='amf'
 REPO=""
-BIN_REPO="https://github.com/airchains-network/junction/releases/download/v0.1.0/junctiond"
+BIN_REPO="https://github.com/airchains-network/junction/releases/download/v0.3.1/junctiond-linux-amd64"
 REPO_DIR="junction"
-BRANCH="v0.1.0"
+BRANCH="v0.3.1"
 GOPATH=$HOME/go
 
 #Prerequisites
@@ -46,21 +46,21 @@ if ! grep -q "export CHAIN_ID=${CHAIN_ID}" $HOME/.profile; then
 fi
 source $HOME/.profile
 ##Check and install Go
-GO_VERSION=$(go version 2>/dev/null | grep -oP 'go1\.22\.0')
-if [ -z "$(echo "$GO_VERSION" | grep -E 'go1\.22\.0')" ]; then
-    echo "Go is not installed or not version 1.22.0. Installing Go 1.22.0..."
-    wget https://go.dev/dl/go1.22.0.linux-amd64.tar.gz
+GO_VERSION=$(go version 2>/dev/null | grep -oP 'go1\.24\.1')
+if [ -z "$(echo "$GO_VERSION" | grep -E 'go1\.24\.1')" ]; then
+    echo "Go is not installed or not version 1.24.1. Installing Go 1.24.1..."
+    wget https://go.dev/dl/go1.24.1.linux-amd64.tar.gz
     sudo rm -rf $(which go)
-    sudo rm -rf /usr/local/go && sudo tar -C /usr/local -xzf go1.22.0.linux-amd64.tar.gz
-    rm go1.22.0.linux-amd64.tar.gz
+    sudo rm -rf /usr/local/go && sudo tar -C /usr/local -xzf go1.24.1.linux-amd64.tar.gz
+    rm go1.24.1.linux-amd64.tar.gz
 else
-    echo "Go version 1.22.0 is already installed."
+    echo "Go version 1.24.1 is already installed."
 fi
 ##Check and install cosmovisor
 if ! command -v cosmovisor > /dev/null 2>&1 || ! which cosmovisor &> /dev/null; then
-    wget https://github.com/cosmos/cosmos-sdk/releases/download/cosmovisor%2Fv1.5.0/cosmovisor-v1.5.0-linux-amd64.tar.gz
-    tar -xvzf cosmovisor-v1.5.0-linux-amd64.tar.gz
-    rm cosmovisor-v1.5.0-linux-amd64.tar.gz
+    wget https://github.com/cosmos/cosmos-sdk/releases/download/cosmovisor%2Fv1.7.1/cosmovisor-v1.7.1-linux-amd64.tar.gz
+    tar -xvzf cosmovisor-v1.7.1-linux-amd64.tar.gz
+    rm cosmovisor-v1.7.1-linux-amd64.tar.gz
     sudo cp cosmovisor /usr/local/bin/cosmovisor
 fi
 sudo apt -qy install curl git jq lz4 build-essential unzip tar
